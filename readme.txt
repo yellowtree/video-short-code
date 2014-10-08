@@ -4,7 +4,7 @@ Donate link: http://www.xbc.me/donate
 Tags: video, short code, youku, ku6, tudou,sohu,qq,letv,56
 Requires at least: 2.8
 Tested up to: 4.0
-Stable tag: 1.1
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,6 +23,7 @@ support video site:
 * [Ku6](http://www.ku6.com "Ku6")
 * [Letv](http://www.letv.com "乐视")
 * [56](http://www.56.com "56")
+* [yinyuetai](http://www.yinyuetai.com "yinyuetai")
 
 = Related Links =
 
@@ -56,6 +57,11 @@ no screenshots
 This plugin support just copy video url link to content and convert it t o video short code.
 
 == Changelog ==
+
+= Version 1.2.0 - 17 Dec 2014 =
+* support yinyuetai.com.
+* add mobile support with youku.com.
+* fix version number to x.x.x.
 
 = Version 1.1 - 12 Sep 2014 =
 * Rename plugin to Video Short Code.
