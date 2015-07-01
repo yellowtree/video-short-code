@@ -49,7 +49,7 @@ class VideoShortCode{
     );
     private $_regexs = array(
         'youku'   => array(
-            'regex' => '/http:\/\/v\.youku\.com\/v_show\/id_(\w+)\.html(\?from=(.*)+)?/',
+            'regex' => '/http:\/\/v\.youku\.com\/v_show\/id_([\w=]+)\.html(\?from=(.*)+)?/',
             'count' => 1,
         ),
         'tudou'   => array(
