@@ -1,6 +1,6 @@
 <?php 
 /**
- * Plugin Name: Video Short Code
+ * Plugin Name: Video Short Code (pull request pending)
  * Plugin URI: https://github.com/caijiamx/video-short-code
  * Description: This plugin can  insert video quikly width shortcode ,specially for some chinese video sites, like  youku.com,tudou.com,ku6.com.
  * Author: Matt
@@ -84,6 +84,7 @@ class VideoShortCode{
 
     public function __construct(){
         add_action( 'admin_notices', array( $this, 'getNotices' ) );
+        add_filter( 'insert-video-with-shortcode/shortcode_attributed', array($this, 'shortCodeOnlyIfPostIsSingle'));
     }
 
     public function checkRequire(){
@@ -159,12 +160,19 @@ class VideoShortCode{
 
     private function _call($name, $atts){
         $type = str_replace('play_', '', $name);
+    	
+        $atts = apply_filters('insert-video-with-shortcode/shortcode_attributed', $atts, $name);
+        
         $atts = shortcode_atts(array(
-            'code'   =>'',
-            'width'  =>'480',
-            'height' =>'400'
+        		'code'   =>'',
+        		'width'  =>'480',
+        		'height' =>'400'
         ),$atts);
-        $code   = $atts['code'];
+        
+		if (empty($atts['code']))
+			return '';
+        
+		$code   = $atts['code'];
         $width  = $atts['width'];
         $height = $atts['height'];
         $template = $this->_object[$type]['url'];
@@ -177,10 +185,14 @@ class VideoShortCode{
         $this->loger('$code = ' . $code , __FUNCTION__);
         $this->loger('$data = ' . $data , __FUNCTION__);
         $this->loger('$flash = ' . $flash , __FUNCTION__);
-        if(is_single()){
-            return $flash ;
-        }
-        return '';
+        
+        return $flash ;
+    }
+    
+    public function shortCodeOnlyIfPostIsSingle($attr, $name) {
+    	if (!is_single())
+    		$attr['code'] = ''; // Do not show
+    	return $attr;
     }
 
     public function saveContentBefore($content){
@@ -190,10 +202,12 @@ class VideoShortCode{
                 $count = $value['count'];
                 $format  = '[%s code=\'${%d}\']';
                 $replace = sprintf($format , $key , $count);
-                $content = preg_replace( $regex, $replace , $content);
+                $content = preg_replace( $regex, $replace , $content, 10, $nbReplaced);
                 $this->loger('$regex = ' . $regex , __FUNCTION__);
                 $this->loger('$replace = ' . $replace , __FUNCTION__);
                 $this->loger('$content = ' . $content , __FUNCTION__);
+                if ($nbReplaced)
+                	$this->loger("Yes, was replaced $nbReplaced times.", __FUNCTION__);
             }
         }
         return $content;
